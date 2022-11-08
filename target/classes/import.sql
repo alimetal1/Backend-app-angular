@@ -9,9 +9,6 @@ INSERT INTO regiones (id, nombre) VALUES (6, 'Africa');
 INSERT INTO regiones (id, nombre) VALUES (7, 'Oceanía');
 INSERT INTO regiones (id, nombre) VALUES (8, 'Antártida');
 
-INSERT INTO publicaciones (id, comentario, create_at) VALUES (1, '', LocalDate.now());
-INSERT INTO publicaciones (id, comentario, create_at) VALUES (2, '', LocalDate.now());
-INSERT INTO publicaciones (id, comentario, create_at) VALUES (3, '', LocalDate.now());
 
 INSERT INTO clientes (region_id, nombre, apellido, email, create_at) VALUES(1, 'Alison', 'Morales', 'profesor@bolsadeideas.com', '2018-01-01');
 INSERT INTO clientes (region_id, nombre, apellido, email, create_at) VALUES(2, 'Mr. John', 'Doe', 'john.doe@gmail.com', '2018-01-02');
@@ -32,6 +29,10 @@ INSERT INTO `usuarios` (username, password, enabled, nombre, apellido, email) VA
 
 INSERT INTO `roles` (nombre) VALUES ('ROLE_USER');
 INSERT INTO `roles` (nombre) VALUES ('ROLE_ADMIN');
+
+INSERT INTO `db_springboot_backend`.`publicaciones` (`comentario`, `create_at`, `clientes_id`) VALUES ('primer', now(), '2');
+INSERT INTO `db_springboot_backend`.`publicaciones` (`comentario`, `create_at`, `clientes_id`) VALUES ('segundo', now(), '1');
+INSERT INTO `db_springboot_backend`.`publicaciones` (`comentario`, `create_at`, `clientes_id`) VALUES ('tercero', now(), '3');
 
 INSERT INTO `usuarios_roles` (usuario_id, role_id) VALUES (1, 1);
 INSERT INTO `usuarios_roles` (usuario_id, role_id) VALUES (2, 2);
