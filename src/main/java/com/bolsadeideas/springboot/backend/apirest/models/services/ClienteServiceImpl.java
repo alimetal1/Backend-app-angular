@@ -10,6 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.bolsadeideas.springboot.backend.apirest.models.dao.IClienteDao;
 import com.bolsadeideas.springboot.backend.apirest.models.entity.Cliente;
+import com.bolsadeideas.springboot.backend.apirest.models.entity.Publicacion;
 import com.bolsadeideas.springboot.backend.apirest.models.entity.Region;
 
 @Service
@@ -54,4 +55,9 @@ public class ClienteServiceImpl implements IClienteService {
 		return clienteDao.findAllRegiones();
 	}
 
+	@Override
+	@Transactional(readOnly = true)
+	public List<Publicacion> findAllPublicacions() {
+		return clienteDao.findAllPublicacions();
+	}
 }

@@ -54,8 +54,7 @@ public class Cliente implements Serializable {
 	@JoinColumn(name="region_id")
 	@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 	private Region region;
-	
-	
+
 	public Long getId() {
 		return id;
 	}

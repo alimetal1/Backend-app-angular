@@ -9,6 +9,10 @@ INSERT INTO regiones (id, nombre) VALUES (6, 'Africa');
 INSERT INTO regiones (id, nombre) VALUES (7, 'Oceanía');
 INSERT INTO regiones (id, nombre) VALUES (8, 'Antártida');
 
+INSERT INTO publicaciones (id, comentario, create_at) VALUES (1, '', LocalDate.now());
+INSERT INTO publicaciones (id, comentario, create_at) VALUES (2, '', LocalDate.now());
+INSERT INTO publicaciones (id, comentario, create_at) VALUES (3, '', LocalDate.now());
+
 INSERT INTO clientes (region_id, nombre, apellido, email, create_at) VALUES(1, 'Alison', 'Morales', 'profesor@bolsadeideas.com', '2018-01-01');
 INSERT INTO clientes (region_id, nombre, apellido, email, create_at) VALUES(2, 'Mr. John', 'Doe', 'john.doe@gmail.com', '2018-01-02');
 INSERT INTO clientes (region_id, nombre, apellido, email, create_at) VALUES(4, 'Linus', 'Torvalds', 'linus.torvalds@gmail.com', '2018-01-03');
