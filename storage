@@ -1,0 +1,93 @@
+Sí, lo más común es implementar la manipulación del sessionStorage dentro de un servicio en Angular. Aquí tienes un ejemplo de cómo podrías estructurar un servicio para manejar el sessionStorage en tu caso:
+
+typescript
+Copy code
+import { Injectable } from '@angular/core';
+import { SessionStorageService } from 'ngx-webstorage';
+
+@Injectable({
+  providedIn: 'root'
+})
+export class FacturaService {
+
+  constructor(private sessionStorage: SessionStorageService) { }
+
+  guardarFacturaEnSessionStorage(facturaId: number, numeroOrden: string): void {
+    this.sessionStorage.store('facturaId', facturaId);
+    this.sessionStorage.store('numeroOrden', numeroOrden);
+  }
+
+  obtenerFacturaDesdeSessionStorage(): { facturaId: number, numeroOrden: string } {
+    const facturaId = this.sessionStorage.retrieve('facturaId');
+    const numeroOrden = this.sessionStorage.retrieve('numeroOrden');
+    return { facturaId, numeroOrden };
+  }
+
+  limpiarSessionStorage(): void {
+    this.sessionStorage.clear('facturaId');
+    this.sessionStorage.clear('numeroOrden');
+  }
+
+}
+En este ejemplo, hemos creado el servicio FacturaService que utiliza la inyección de dependencias para obtener el servicio SessionStorageService proporcionado por ngx-webstorage. El servicio FacturaService tiene métodos para guardar, obtener y limpiar la información de la factura en el sessionStorage.
+
+Luego, en tus componentes, puedes usar este servicio para interactuar con el sessionStorage de la siguiente manera:
+
+typescript
+Copy code
+import { Component } from '@angular/core';
+import { FacturaService } from 'ruta-al-servicio/factura.service';
+
+@Component({
+  selector: 'app-generar-factura',
+  template: `
+    <button (click)="generarFactura()">Generar Factura</button>
+  `
+})
+export class GenerarFacturaComponent {
+
+  constructor(private facturaService: FacturaService) { }
+
+  generarFactura(): void {
+    // Lógica para generar la factura y obtener facturaId y numeroOrden
+    const facturaId = // Obtener el ID de la factura generado
+    const numeroOrden = // Obtener el número de orden generado
+
+    // Guardar la factura en el sessionStorage utilizando el servicio FacturaService
+    this.facturaService.guardarFacturaEnSessionStorage(facturaId, numeroOrden);
+
+    // Redireccionar al portal de pago
+    // ...
+  }
+
+}
+typescript
+Copy code
+import { Component } from '@angular/core';
+import { FacturaService } from 'ruta-al-servicio/factura.service';
+
+@Component({
+  selector: 'app-verificar-pago',
+  template: `
+    <button (click)="verificarPago()">Verificar Pago</button>
+  `
+})
+export class VerificarPagoComponent {
+
+  constructor(private facturaService: FacturaService) { }
+
+  verificarPago(): void {
+    // Obtener la factura desde el sessionStorage utilizando el servicio FacturaService
+    const { facturaId, numeroOrden } = this.facturaService.obtenerFacturaDesdeSessionStorage();
+
+    // Lógica para verificar el estado del pago y actualizar la factura
+    // utilizando facturaId y numeroOrden
+    // ...
+
+    // Limpiar la información de la factura en el sessionStorage utilizando el servicio FacturaService
+    this.facturaService.limpiarSessionStorage();
+  }
+
+}
+De esta manera, encapsulas la lógica de interacción con el sessionStorage en el servicio FacturaService y lo utilizas en tus componentes para guardar, obtener y limpiar la información
+
