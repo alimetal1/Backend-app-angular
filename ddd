@@ -1,0 +1,36 @@
+import { Injectable } from '@angular/core';
+
+@Injectable({
+  providedIn: 'root'
+})
+export class SessionStorageService {
+  private orderNumbersKey = 'orderNumbers';
+
+  constructor() { }
+
+  guardarOrderNumber(orderNumber: string): void {
+    const orderNumbers = this.getOrderNumbersFromSessionStorage();
+
+    orderNumbers.push(orderNumber);
+
+    this.setOrderNumbersToSessionStorage(orderNumbers);
+  }
+
+  obtenerOrderNumbers(): string[] {
+    return this.getOrderNumbersFromSessionStorage();
+  }
+
+  private getOrderNumbersFromSessionStorage(): string[] {
+    const orderNumbersString = sessionStorage.getItem(this.orderNumbersKey);
+
+    if (orderNumbersString) {
+      return JSON.parse(orderNumbersString) as string[];
+    }
+
+    return [];
+  }
+
+  private setOrderNumbersToSessionStorage(orderNumbers: string[]): void {
+    sessionStorage.setItem(this.orderNumbersKey, JSON.stringify(orderNumbers));
+  }
+}
