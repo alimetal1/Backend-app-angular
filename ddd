@@ -1,36 +1,39 @@
-import { Injectable } from '@angular/core';
+guardarOrderNumber(orderNumber: string): void {
+  const orderNumbersKey = 'orderNumbers';
+  let orderNumbers: string[] = [];
 
-@Injectable({
-  providedIn: 'root'
-})
-export class SessionStorageService {
-  private orderNumbersKey = 'orderNumbers';
-
-  constructor() { }
-
-  guardarOrderNumber(orderNumber: string): void {
-    const orderNumbers = this.getOrderNumbersFromSessionStorage();
-
-    orderNumbers.push(orderNumber);
-
-    this.setOrderNumbersToSessionStorage(orderNumbers);
+  const orderNumbersString = sessionStorage.getItem(orderNumbersKey);
+  if (orderNumbersString) {
+    orderNumbers = JSON.parse(orderNumbersString) as string[];
   }
 
-  obtenerOrderNumbers(): string[] {
-    return this.getOrderNumbersFromSessionStorage();
-  }
+  orderNumbers.push(orderNumber);
 
-  private getOrderNumbersFromSessionStorage(): string[] {
-    const orderNumbersString = sessionStorage.getItem(this.orderNumbersKey);
+  sessionStorage.setItem(orderNumbersKey, JSON.stringify(orderNumbers));
+}
 
-    if (orderNumbersString) {
-      return JSON.parse(orderNumbersString) as string[];
-    }
 
+obtenerOrderNumbers(): string[] {
+  const orderNumbersKey = 'orderNumbers';
+  const orderNumbersString = sessionStorage.getItem(orderNumbersKey);
+
+  if (orderNumbersString) {
+    // Si existe un valor en el sessionStorage, lo convertimos a un arreglo de strings
+    const orderNumbers = JSON.parse(orderNumbersString) as string[];
+    return orderNumbers;
+  } else {
+    // Si no existe ningún valor en el sessionStorage, devolvemos un arreglo vacío
     return [];
   }
-
-  private setOrderNumbersToSessionStorage(orderNumbers: string[]): void {
-    sessionStorage.setItem(this.orderNumbersKey, JSON.stringify(orderNumbers));
-  }
 }
+ProcesarPago(): void {
+  // Obtener el orderNumber desde donde corresponda
+  const orderNumber = 'EjemploOrderNumber';
+
+  // Guardar el orderNumber en el sessionStorage
+  this.sessionStorageService.guardarOrderNumber(orderNumber);
+
+  // Resto del código de procesamiento del pago
+  // ...
+}
+
