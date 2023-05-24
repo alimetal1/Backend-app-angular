@@ -1,39 +1,25 @@
-guardarOrderNumber(orderNumber: string): void {
-  const orderNumbersKey = 'orderNumbers';
-  let orderNumbers: string[] = [];
+import { CreateEPGSubscriptionRequest, CorporateHeaders, Card } from './create-jpg-suscrption-request';
 
-  const orderNumbersString = sessionStorage.getItem(orderNumbersKey);
-  if (orderNumbersString) {
-    orderNumbers = JSON.parse(orderNumbersString) as string[];
-  }
+function buildRequestToDropSuscription(customerId: ConsultaClienteEPGI): CreateEPGSubscriptionRequest {
+  const request: CreateEPGSubscriptionRequest = {
+    card: {
+      cardTokenId: customerId.subscription828.card.cardTokenId,
+      expirationDate: `${cardData.cardExpirationMonth}/${cardData.cardExpirationYear.slice(-2)}`,
+      lastDigits: customerId.subscription828.card.lastDigits,
+      cardType: customerId.subscription828.card.cardType
+    },
+    efxCustomerId: customerId.subscriptionB2B.efxCustomerID,
+    corporateHeaders: {
+      txRef: "ASD",
+      cmRef: "ASD",
+      country: "ARG",
+      version: "1.0"
+    },
+    cuitNumber: customerId.subscription828.cuitNumber
+  };
 
-  orderNumbers.push(orderNumber);
-
-  sessionStorage.setItem(orderNumbersKey, JSON.stringify(orderNumbers));
+  return request;
 }
 
 
-obtenerOrderNumbers(): string[] {
-  const orderNumbersKey = 'orderNumbers';
-  const orderNumbersString = sessionStorage.getItem(orderNumbersKey);
-
-  if (orderNumbersString) {
-    // Si existe un valor en el sessionStorage, lo convertimos a un arreglo de strings
-    const orderNumbers = JSON.parse(orderNumbersString) as string[];
-    return orderNumbers;
-  } else {
-    // Si no existe ningún valor en el sessionStorage, devolvemos un arreglo vacío
-    return [];
-  }
-}
-ProcesarPago(): void {
-  // Obtener el orderNumber desde donde corresponda
-  const orderNumber = 'EjemploOrderNumber';
-
-  // Guardar el orderNumber en el sessionStorage
-  this.sessionStorageService.guardarOrderNumber(orderNumber);
-
-  // Resto del código de procesamiento del pago
-  // ...
-}
 
