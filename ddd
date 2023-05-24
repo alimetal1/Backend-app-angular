@@ -2,21 +2,25 @@ import { CreateEPGSubscriptionRequest, CorporateHeaders, Card } from './create-j
 
 function buildRequestToDropSuscription(customerId: ConsultaClienteEPGI, cardData: CardData): CreateEPGSubscriptionRequest {
   const request: CreateEPGSubscriptionRequest = {
+    card: {
+      cardTokenId: customerId.subscription828.card.cardTokenId,
+      expirationDate: `${cardData.cardExpirationMonth}/${cardData.cardExpirationYear.slice(-2)}`,
+      lastDigits: customerId.subscription828.card.lastDigits,
+      cardType: customerId.subscription828.card.cardType
+    },
+    efxCustomerId: customerId.subscriptionB2B.efxCustomerID,
     corporateHeaders: {
       txRef: "ASD",
       cmRef: "ASD",
       country: "ARG",
       version: "1.0"
     },
-    efxCustomerID: customerId.efxCustomerID,
-    card: {
-      cardTokenId: customerId.card.cardTokenId,
-      cardType: customerId.card.cardType
-    }
+    cuitNumber: customerId.subscription828.cuitNumber
   };
 
   return request;
 }
+
 
 
 
