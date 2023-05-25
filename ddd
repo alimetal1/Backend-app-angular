@@ -1,57 +1,40 @@
-import { CreateEPGSubscriptionRequest, CorporateHeaders, Card } from './create-jpg-suscrption-request';
-
-function buildRequestToDropSuscription(customerId: ConsultaClienteEPGI): CreateEPGSubscriptionRequest {
-  const request: CreateEPGSubscriptionRequest = {
-    corporateHeaders: {
-      txRef: 'ASD',
-      cmRef: 'ASD',
-      country: 'ARG',
-      version: '1.0'
-    },
-    efxCustomerID: customerId.efxCustomerID,
-    card: {
-      cardTokenId: customerId.card.cardTokenId,
-      cardType: customerId.card.cardType
-    },
-    cuitNumber: customerId.cuitNumber
-  };
-
-  return request;
-}
-
 describe('buildRequestToDropSuscription', () => {
   it('should build the request to drop subscription', () => {
-    const customerId: ConsultaClienteEPGI = {
-      efxCustomerID: 'efx123',
-      card: {
-        cardTokenId: 'token123',
-        cardType: 'VISA'
+    const customerId = {
+      subscription828: {
+        card: {
+          cardTokenId: 'token123',
+          lastDigits: '1234',
+          cardType: 'VISA'
+        },
+        cuitNumber: '123456789'
       },
-      cuitNumber: '123456789'
+      subscriptionB2B: {
+        efxCustomerID: 'efx123'
+      }
     };
 
-    const expectedRequest: CreateEPGSubscriptionRequest = {
+    const cardData = {
+      cardExpirationMonth: '12',
+      cardExpirationYear: '2025'
+    };
+
+    const expectedRequest = {
+      cardTokenId: customerId.subscription828.card.cardTokenId,
+      expirationDate: `${cardData.cardExpirationMonth}/${cardData.cardExpirationYear.slice(-2)}`,
+      lastDigits: customerId.subscription828.card.lastDigits,
+      cardType: customerId.subscription828.card.cardType,
+      efxCustomerID: customerId.subscriptionB2B.efxCustomerID,
       corporateHeaders: {
         txRef: 'ASD',
         cmRef: 'ASD',
-        country: 'ARG',
+        Country: 'ARG',
         version: '1.0'
       },
-      efxCustomerID: 'efx123',
-      card: {
-        cardTokenId: 'token123',
-        cardType: 'VISA'
-      },
-      cuitNumber: '123456789'
+      cuitNumber: customerId.subscription828.cuitNumber
     };
 
-    const result = buildRequestToDropSuscription(customerId);
+    const result = buildRequestToDropSuscription(customerId, cardData);
 
     expect(result).toEqual(expectedRequest);
   });
-});
-
-
-
-
-
