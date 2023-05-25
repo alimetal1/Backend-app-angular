@@ -1,25 +1,56 @@
 import { CreateEPGSubscriptionRequest, CorporateHeaders, Card } from './create-jpg-suscrption-request';
 
-function buildRequestToDropSuscription(customerId: ConsultaClienteEPGI, cardData: CardData): CreateEPGSubscriptionRequest {
+function buildRequestToDropSuscription(customerId: ConsultaClienteEPGI): CreateEPGSubscriptionRequest {
   const request: CreateEPGSubscriptionRequest = {
-    card: {
-      cardTokenId: customerId.subscription828.card.cardTokenId,
-      expirationDate: `${cardData.cardExpirationMonth}/${cardData.cardExpirationYear.slice(-2)}`,
-      lastDigits: customerId.subscription828.card.lastDigits,
-      cardType: customerId.subscription828.card.cardType
-    },
-    efxCustomerId: customerId.subscriptionB2B.efxCustomerID,
     corporateHeaders: {
-      txRef: "ASD",
-      cmRef: "ASD",
-      country: "ARG",
-      version: "1.0"
+      txRef: 'ASD',
+      cmRef: 'ASD',
+      country: 'ARG',
+      version: '1.0'
     },
-    cuitNumber: customerId.subscription828.cuitNumber
+    efxCustomerID: customerId.efxCustomerID,
+    card: {
+      cardTokenId: customerId.card.cardTokenId,
+      cardType: customerId.card.cardType
+    },
+    cuitNumber: customerId.cuitNumber
   };
 
   return request;
 }
+
+describe('buildRequestToDropSuscription', () => {
+  it('should build the request to drop subscription', () => {
+    const customerId: ConsultaClienteEPGI = {
+      efxCustomerID: 'efx123',
+      card: {
+        cardTokenId: 'token123',
+        cardType: 'VISA'
+      },
+      cuitNumber: '123456789'
+    };
+
+    const expectedRequest: CreateEPGSubscriptionRequest = {
+      corporateHeaders: {
+        txRef: 'ASD',
+        cmRef: 'ASD',
+        country: 'ARG',
+        version: '1.0'
+      },
+      efxCustomerID: 'efx123',
+      card: {
+        cardTokenId: 'token123',
+        cardType: 'VISA'
+      },
+      cuitNumber: '123456789'
+    };
+
+    const result = buildRequestToDropSuscription(customerId);
+
+    expect(result).toEqual(expectedRequest);
+  });
+});
+
 
 
 
