@@ -1,0 +1,47 @@
+import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { FormsModule } from '@angular/forms';
+
+import { TuComponente } from './tu-componente'; // Reemplaza "TuComponente" con el nombre de tu componente
+
+describe('TuComponente', () => {
+  let component: TuComponente;
+  let fixture: ComponentFixture<TuComponente>;
+
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
+      imports: [FormsModule],
+      declarations: [TuComponente]
+    })
+    .compileComponents();
+  });
+
+  beforeEach(() => {
+    fixture = TestBed.createComponent(TuComponente);
+    component = fixture.componentInstance;
+    fixture.detectChanges();
+  });
+
+  it('should update checkboxValueTerminos when terms are checked', () => {
+    const isChecked = document.createElement('input');
+    isChecked.type = 'checkbox';
+    isChecked.id = 'aceptaTerminos';
+    isChecked.checked = true;
+    document.body.appendChild(isChecked);
+
+    component.isTermsChecked();
+
+    expect(component.checkboxValueTerminos).toBe(true);
+  });
+
+  it('should update checkboxValueTerminos when terms are not checked', () => {
+    const isChecked = document.createElement('input');
+    isChecked.type = 'checkbox';
+    isChecked.id = 'aceptaTerminos';
+    isChecked.checked = false;
+    document.body.appendChild(isChecked);
+
+    component.isTermsChecked();
+
+    expect(component.checkboxValueTerminos).toBe(false);
+  });
+});
