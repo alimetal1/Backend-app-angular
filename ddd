@@ -1,40 +1,105 @@
-describe('buildRequestToDropSuscription', () => {
-  it('should build the request to drop subscription', () => {
-    const customerId = {
-      subscription828: {
-        card: {
-          cardTokenId: 'token123',
-          lastDigits: '1234',
-          cardType: 'VISA'
-        },
-        cuitNumber: '123456789'
-      },
-      subscriptionB2B: {
-        efxCustomerID: 'efx123'
+<button mat-button (click)="openModal()">Abrir Modal</button>
+
+<mat-dialog-content *ngIf="isModalOpen">
+  <img src="ruta-a-la-imagen" alt="Check Image" class="check-image">
+  <h2 mat-dialog-title>Pago exitoso</h2>
+  <div class="payment-details">
+    <div class="payment-success-message">
+      Estimado usuario, su pago se realizó de forma exitosa. En 24 horas hábiles, su factura impaga será dada de baja. Muchas gracias.
+    </div>
+    <div class="countdown">
+      Esta ventana se cerrará automáticamente en {{ countdown }} segundos
+    </div>
+  </div>
+  <button mat-button class="close-button" (click)="closeModal()">
+    <img src="ruta-a-la-imagen-cerrar" alt="Cerrar" class="close-image">
+    Cerrar
+  </button>
+</mat-dialog-content>
+
+
+
+
+
+.check-image {
+  width: 120px;
+  height: 120px;
+}
+
+.payment-details {
+  width: 460px;
+  height: 43px;
+}
+
+.payment-success-message {
+  font-size: 16px;
+  font-weight: normal;
+  width: 460px;
+  height: 105px;
+}
+
+.countdown {
+  font-size: 16px;
+  font-weight: normal;
+  width: 460px;
+  height: 30px;
+}
+
+.close-button {
+  width: 105px;
+  height: 46px;
+  background-color: #333d47;
+  color: #fff;
+}
+
+.close-image {
+  width: 16px;
+  height: 16px;
+  opacity: 1;
+}
+
+.close-button span {
+  width: 49px;
+  height: 22px;
+}
+
+
+
+import { Component } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
+
+@Component({
+  selector: 'app-modal-dialog',
+  templateUrl: './modal-dialog.component.html',
+  styleUrls: ['./modal-dialog.component.css']
+})
+export class ModalDialogComponent {
+  isModalOpen: boolean = false;
+  countdown: number = 10;
+  countdownInterval: any;
+
+  constructor(private dialog: MatDialog) { }
+
+  openModal() {
+    this.isModalOpen = true;
+    this.startCountdown();
+  }
+
+  closeModal() {
+    this.isModalOpen = false;
+    this.clearCountdown();
+  }
+
+  startCountdown() {
+    this.countdownInterval = setInterval(() => {
+      this.countdown--;
+      if (this.countdown === 0) {
+        this.closeModal();
       }
-    };
+    }, 1000);
+  }
 
-    const cardData = {
-      cardExpirationMonth: '12',
-      cardExpirationYear: '2025'
-    };
-
-    const expectedRequest = {
-      cardTokenId: customerId.subscription828.card.cardTokenId,
-      expirationDate: `${cardData.cardExpirationMonth}/${cardData.cardExpirationYear.slice(-2)}`,
-      lastDigits: customerId.subscription828.card.lastDigits,
-      cardType: customerId.subscription828.card.cardType,
-      efxCustomerID: customerId.subscriptionB2B.efxCustomerID,
-      corporateHeaders: {
-        txRef: 'ASD',
-        cmRef: 'ASD',
-        Country: 'ARG',
-        version: '1.0'
-      },
-      cuitNumber: customerId.subscription828.cuitNumber
-    };
-
-    const result = buildRequestToDropSuscription(customerId, cardData);
-
-    expect(result).toEqual(expectedRequest);
-  });
+  clearCountdown() {
+    clearInterval(this.countdownInterval);
+  }
+}
